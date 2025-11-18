@@ -1,0 +1,15 @@
+name: stack-orchestra
+
+networks:
+  stack-orchestra:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
+  neo4j-data:
+  neo4j-logs:
+  postgres-data:
+  mysql-data:
+  arangodb-data:
+  mongodb-data:
+

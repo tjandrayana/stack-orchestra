@@ -1,0 +1,27 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: stack-orchestra-mongodb
+    command: ["--wiredTigerCacheSizeGB", "1"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: orchestra
+      MONGO_INITDB_ROOT_PASSWORD: orchestra
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "mongodb://orchestra:orchestra@localhost:27017/admin",
+          "--eval",
+          "db.runCommand({ ping: 1 })",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - stack-orchestra
+
