@@ -1,0 +1,7 @@
+title: Stack Orchestra
+description: A flexible Docker Compose orchestration tool for managing multiple technology stacks
+theme: jekyll-theme-minimal
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
