@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 COMPOSE ?= docker compose
-SERVICE_LIST := elasticsearch kibana neo4j postgres mysql arangodb redis mongodb nginx
+SERVICE_LIST := elasticsearch kibana neo4j postgres mysql arangodb redis mongodb nginx openresty
 SERVICES ?= $(SERVICE_LIST)
 PARALLELISM ?= 5
 COMPOSE_ALL_FILES := docker-compose.yml $(addprefix compose/,$(addsuffix .yml,$(SERVICE_LIST)))
@@ -17,6 +17,7 @@ SERVICE_DEPS_arangodb :=
 SERVICE_DEPS_redis :=
 SERVICE_DEPS_mongodb :=
 SERVICE_DEPS_nginx :=
+SERVICE_DEPS_openresty :=
 
 resolve_services = $(strip $(1) $(foreach svc,$(1),$($(addprefix SERVICE_DEPS_,$(svc)))))
 resolve_all = $(strip $(sort $(call resolve_services,$(1))))

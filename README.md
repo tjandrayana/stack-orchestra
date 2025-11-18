@@ -43,10 +43,15 @@ stack-orchestra/
 │   ├── arangodb.yml
 │   ├── redis.yml
 │   ├── mongodb.yml
-│   └── nginx.yml
+│   ├── nginx.yml
+│   └── openresty.yml
 └── ops/                         # Service configurations
-    └── nginx/
-        └── default.conf
+    ├── nginx/
+    │   └── default.conf
+    └── openresty/
+        ├── default.conf
+        └── lua/
+            └── hello.lua
 ```
 
 ## 🎼 Available Services
@@ -62,6 +67,7 @@ stack-orchestra/
 | **Redis** | 7.4 | 6379 | In-memory data structure store |
 | **MongoDB** | 7.0 | 27017 | NoSQL document database |
 | **Nginx** | 1.27 | 8080 | Web server and reverse proxy |
+| **OpenResty** | 1.25.3.1 | 8081 | Nginx with LuaJIT and Lua libraries |
 
 ### Service Dependencies
 
@@ -81,6 +87,7 @@ make help
 make elasticsearch-up
 make postgres-up
 make redis-up
+make openresty-up
 ```
 
 ### Start Multiple Services
@@ -193,6 +200,22 @@ SERVICES="neo4j arangodb" make up
 SERVICES="postgres redis mongodb nginx" make up-parallel
 
 # All services will be available on their respective ports
+```
+
+### Example 5: OpenResty with Lua
+
+```bash
+# Start OpenResty (Nginx + Lua)
+make openresty-up
+
+# Test the endpoints
+curl http://localhost:8081                    # Inline Lua example
+curl http://localhost:8081/lua                # External Lua script
+curl http://localhost:8081/api/info           # JSON API endpoint
+curl http://localhost:8081/health              # Health check
+
+# OpenResty runs on port 8081 (nginx uses 8080)
+# Add your own Lua scripts in ops/openresty/lua/
 ```
 
 ## 🔧 Configuration
