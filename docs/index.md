@@ -97,7 +97,7 @@ cd stack-orchestra
 make help
 ```
 
-**Boom!** You just saw all 9 available services. That took 10 seconds.
+**Boom!** You just saw all 12 available services. That took 10 seconds.
 
 Now try this:
 
@@ -123,7 +123,7 @@ make ps
 
 **Before Stack Orchestra:**
 ```bash
-# Start entire docker-compose with 9 services
+# Start entire docker-compose with 12 services
 docker-compose up -d
 # Your laptop: 💻🔥🔥🔥 (overheating)
 # Your RAM: 📈📈📈 (maxed out)
@@ -194,7 +194,7 @@ PARALLELISM=3 make up-parallel
 
 ## 🎁 What's in the Box? (Spoiler: It's Awesome)
 
-Stack Orchestra comes with **9 battle-tested technology stacks**:
+Stack Orchestra comes with **12 battle-tested technology stacks**:
 
 | 🎯 Technology | 💡 What It's For | 🚀 Try It |
 |--------------|------------------|----------|
@@ -207,6 +207,9 @@ Stack Orchestra comes with **9 battle-tested technology stacks**:
 | **MongoDB** | Document DB | `make mongodb-up` |
 | **Nginx** | Web Server | `make nginx-up` |
 | **OpenResty** | Nginx + Lua | `make openresty-up` |
+| **Prometheus** | Metrics & Monitoring | `make prometheus-up` |
+| **Grafana** | Visualization & Dashboards | `make grafana-up` |
+| **ScyllaDB** | High-Performance NoSQL | `make scylla-up` |
 
 **Each one:**
 - ✅ Pre-configured (no setup needed)
@@ -260,6 +263,21 @@ make openresty-up
 
 **Time spent:** 30 seconds  
 **Time experimenting:** All evening! 🚀
+
+---
+
+### 🌃 Night: Monitoring Your Stack
+
+```bash
+make grafana-up
+# Automatically starts Prometheus too!
+# Access Grafana at http://localhost:3000 (admin/admin)
+# Prometheus pre-configured as data source
+# Creating beautiful dashboards! 📊
+```
+
+**Time spent:** 1 minute  
+**Time monitoring:** All night! 📈
 
 ---
 
@@ -373,6 +391,30 @@ make <service>-down  # 5 seconds
 
 ---
 
+### Scenario 3: "I Need Monitoring for My App"
+
+**Old way:**
+- Set up Prometheus (1 hour)
+- Configure Grafana (30 min)
+- Connect them together (30 min)
+- Create dashboards (1 hour)
+- **Total: 3 hours of setup**
+
+**Stack Orchestra way:**
+```bash
+make grafana-up
+# Wait 1 minute...
+# Prometheus is running at http://localhost:9090
+# Grafana is running at http://localhost:3000
+# Prometheus is already configured as a data source!
+# Start creating dashboards immediately!
+```
+**Total: 1 minute**
+
+**You just saved 2 hours and 59 minutes. That's enough time to build a complete feature!**
+
+---
+
 ### Scenario 2: "I'm Building a Full-Stack App"
 
 **Old way:**
@@ -404,6 +446,7 @@ I'm not done yet! Here's what's coming:
 - 🎨 **UI Dashboard:** A web interface to manage services (maybe?)
 - 🤖 **Auto-Discovery:** Automatically detect what services your project needs
 - 🌍 **Cloud Support:** Deploy to AWS, GCP, Azure with one command
+- 📊 **Pre-built Dashboards:** Ready-to-use Grafana dashboards for common metrics
 
 **Want to help?** Contributions are welcome! Check out the [README](https://github.com/tjandrayana/stack-orchestra) for how to add new services.
 
@@ -504,6 +547,9 @@ SERVICES="postgres redis" make up
 
 # Start in parallel
 SERVICES="postgres redis mongodb" make up-parallel
+
+# Start monitoring stack (Prometheus + Grafana)
+make grafana-up
 
 # Check status
 make ps

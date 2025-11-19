@@ -44,14 +44,23 @@ stack-orchestra/
 │   ├── redis.yml
 │   ├── mongodb.yml
 │   ├── nginx.yml
-│   └── openresty.yml
+│   ├── openresty.yml
+│   ├── prometheus.yml
+│   ├── grafana.yml
+│   └── scylla.yml
 └── ops/                         # Service configurations
     ├── nginx/
     │   └── default.conf
-    └── openresty/
-        ├── default.conf
-        └── lua/
-            └── hello.lua
+    ├── openresty/
+    │   ├── default.conf
+    │   └── lua/
+    │       └── hello.lua
+    ├── prometheus/
+    │   └── prometheus.yml
+    └── grafana/
+        └── provisioning/
+            └── datasources/
+                └── prometheus.yml
 ```
 
 ## 🎼 Available Services
@@ -68,10 +77,14 @@ stack-orchestra/
 | **MongoDB** | 7.0 | 27017 | NoSQL document database |
 | **Nginx** | 1.27 | 8080 | Web server and reverse proxy |
 | **OpenResty** | 1.25.3.1 | 8081 | Nginx with LuaJIT and Lua libraries |
+| **Prometheus** | latest | 9090 | Metrics collection and monitoring |
+| **Grafana** | latest | 3000 | Visualization and dashboards |
+| **ScyllaDB** | latest | 9042, 10000 | High-performance NoSQL database (Cassandra-compatible) |
 
 ### Service Dependencies
 
 - **Kibana** → Requires Elasticsearch (automatically started when running `make kibana-up`)
+- **Grafana** → Requires Prometheus (automatically started when running `make grafana-up`)
 
 ## 🚀 Quick Start
 
@@ -218,6 +231,40 @@ curl http://localhost:8081/health              # Health check
 # Add your own Lua scripts in ops/openresty/lua/
 ```
 
+### Example 6: Monitoring Stack (Prometheus + Grafana)
+
+```bash
+# Start Prometheus only
+make prometheus-up
+
+# Access Prometheus at http://localhost:9090
+# View metrics, targets, and alerts
+
+# Or start Grafana (automatically starts Prometheus)
+make grafana-up
+
+# Access Grafana at http://localhost:3000
+# Default credentials: admin / admin
+# Prometheus is automatically configured as a data source
+# Start creating dashboards immediately!
+```
+
+### Example 7: ScyllaDB (Cassandra-Compatible NoSQL)
+
+```bash
+# Start ScyllaDB
+make scylla-up
+
+# Access ScyllaDB CQL at localhost:9042
+# Access REST API at http://localhost:10000
+
+# Connect using cqlsh (if installed)
+cqlsh localhost 9042
+
+# Or use any Cassandra-compatible client
+# ScyllaDB is fully compatible with Apache Cassandra drivers
+```
+
 ## 🔧 Configuration
 
 ### Default Service List
@@ -250,6 +297,7 @@ Default credentials for services:
 | Neo4j | `neo4j` | `stackorchestra` | - |
 | ArangoDB | `root` | `stackorchestra` | - |
 | MongoDB | `orchestra` | `orchestra` | `admin` |
+| Grafana | `admin` | `admin` | - |
 
 **Note**: These are default development credentials. Change them for production use.
 
@@ -263,6 +311,9 @@ All database services use Docker volumes for data persistence:
 - `stack-orchestra_mysql-data`
 - `stack-orchestra_arangodb-data`
 - `stack-orchestra_mongodb-data`
+- `stack-orchestra_prometheus-data`
+- `stack-orchestra_grafana-data`
+- `stack-orchestra_scylla-data`
 
 Data persists across container restarts. To remove all data:
 
