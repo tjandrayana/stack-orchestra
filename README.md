@@ -47,7 +47,9 @@ stack-orchestra/
 │   ├── openresty.yml
 │   ├── prometheus.yml
 │   ├── grafana.yml
-│   └── scylla.yml
+│   ├── scylla.yml
+│   ├── qdrant.yml
+│   └── milvus.yml
 └── ops/                         # Service configurations
     ├── nginx/
     │   └── default.conf
@@ -80,11 +82,14 @@ stack-orchestra/
 | **Prometheus** | latest | 9090 | Metrics collection and monitoring |
 | **Grafana** | latest | 3000 | Visualization and dashboards |
 | **ScyllaDB** | latest | 9042, 10000 | High-performance NoSQL database (Cassandra-compatible) |
+| **Qdrant** | 1.7.4 | 6333, 6334 | Vector database for similarity search and embeddings |
+| **Milvus** | 2.3.4 | 19530, 9091 | Vector database for AI/ML applications (includes etcd & MinIO) |
 
 ### Service Dependencies
 
 - **Kibana** → Requires Elasticsearch (automatically started when running `make kibana-up`)
 - **Grafana** → Requires Prometheus (automatically started when running `make grafana-up`)
+- **Milvus** → Requires etcd and MinIO (automatically started when running `make milvus-up`)
 
 ## 🚀 Quick Start
 
@@ -101,6 +106,8 @@ make elasticsearch-up
 make postgres-up
 make redis-up
 make openresty-up
+make qdrant-up
+make milvus-up
 ```
 
 ### Start Multiple Services
@@ -265,6 +272,41 @@ cqlsh localhost 9042
 # ScyllaDB is fully compatible with Apache Cassandra drivers
 ```
 
+### Example 8: Qdrant (Vector Database)
+
+```bash
+# Start Qdrant
+make qdrant-up
+
+# Access REST API at http://localhost:6333
+# Access gRPC at localhost:6334
+
+# Test the API
+curl http://localhost:6333/health
+
+# Use with Go client
+# go get github.com/qdrant/go-client
+# Perfect for RAG, semantic search, and similarity search applications
+```
+
+### Example 9: Milvus (Vector Database for AI/ML)
+
+```bash
+# Start Milvus (automatically starts etcd and MinIO)
+make milvus-up
+
+# Access gRPC at localhost:19530
+# Access metrics at http://localhost:9091
+
+# Test health
+curl http://localhost:9091/healthz
+
+# Use with Go SDK
+# go get github.com/milvus-io/milvus-sdk-go
+# Ideal for large-scale vector similarity search and AI applications
+# Note: Milvus includes etcd (metadata) and MinIO (object storage) as dependencies
+```
+
 ## 🔧 Configuration
 
 ### Default Service List
@@ -314,6 +356,10 @@ All database services use Docker volumes for data persistence:
 - `stack-orchestra_prometheus-data`
 - `stack-orchestra_grafana-data`
 - `stack-orchestra_scylla-data`
+- `stack-orchestra_qdrant-data`
+- `stack-orchestra_milvus-data`
+- `stack-orchestra_etcd-data`
+- `stack-orchestra_minio-data`
 
 Data persists across container restarts. To remove all data:
 

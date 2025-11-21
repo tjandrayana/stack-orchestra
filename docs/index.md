@@ -97,7 +97,7 @@ cd stack-orchestra
 make help
 ```
 
-**Boom!** You just saw all 12 available services. That took 10 seconds.
+**Boom!** You just saw all 14 available services. That took 10 seconds.
 
 Now try this:
 
@@ -123,7 +123,7 @@ make ps
 
 **Before Stack Orchestra:**
 ```bash
-# Start entire docker-compose with 12 services
+# Start entire docker-compose with 14 services
 docker-compose up -d
 # Your laptop: 💻🔥🔥🔥 (overheating)
 # Your RAM: 📈📈📈 (maxed out)
@@ -194,7 +194,7 @@ PARALLELISM=3 make up-parallel
 
 ## 🎁 What's in the Box? (Spoiler: It's Awesome)
 
-Stack Orchestra comes with **12 battle-tested technology stacks**:
+Stack Orchestra comes with **14 battle-tested technology stacks**:
 
 | 🎯 Technology | 💡 What It's For | 🚀 Try It |
 |--------------|------------------|----------|
@@ -210,6 +210,8 @@ Stack Orchestra comes with **12 battle-tested technology stacks**:
 | **Prometheus** | Metrics & Monitoring | `make prometheus-up` |
 | **Grafana** | Visualization & Dashboards | `make grafana-up` |
 | **ScyllaDB** | High-Performance NoSQL | `make scylla-up` |
+| **Qdrant** | Vector Database (AI/ML) | `make qdrant-up` |
+| **Milvus** | Vector Database (Large Scale) | `make milvus-up` |
 
 **Each one:**
 - ✅ Pre-configured (no setup needed)
@@ -278,6 +280,27 @@ make grafana-up
 
 **Time spent:** 1 minute  
 **Time monitoring:** All night! 📈
+
+---
+
+### 🌌 Late Night: Building AI Features with Vector Databases
+
+```bash
+# Need vector search for RAG or semantic search?
+make qdrant-up
+# Access REST API at http://localhost:6333
+# Perfect for Go apps with official client library
+# Building AI-powered features! 🤖
+
+# Or for large-scale vector operations?
+make milvus-up
+# Automatically starts etcd and MinIO too!
+# Access gRPC at localhost:19530
+# Enterprise-grade vector database ready! 🚀
+```
+
+**Time spent:** 1 minute  
+**Time building AI features:** All night! 🧠
 
 ---
 
@@ -437,11 +460,43 @@ SERVICES="postgres redis elasticsearch nginx" make up-parallel
 
 ---
 
+### Scenario 4: "I Need Vector Search for My AI App"
+
+**Old way:**
+- Research vector databases (1 hour)
+- Set up Qdrant/Milvus (2 hours)
+- Configure dependencies (1 hour)
+- Write integration code (1 hour)
+- Debug connection issues (1 hour)
+- **Total: 6 hours of setup**
+
+**Stack Orchestra way:**
+```bash
+# For Go apps, Qdrant is perfect
+make qdrant-up
+# Wait 30 seconds...
+# Access at http://localhost:6333
+# Official Go client: github.com/qdrant/go-client
+# Start building RAG features immediately!
+
+# Or for large-scale needs
+make milvus-up
+# Automatically starts etcd and MinIO
+# Wait 1 minute...
+# Access at localhost:19530
+# Enterprise vector database ready!
+```
+**Total: 1 minute**
+
+**You just saved 5 hours and 59 minutes. That's enough time to build your entire AI feature!**
+
+---
+
 ## 🚀 What's Next? (The Roadmap)
 
 I'm not done yet! Here's what's coming:
 
-- 🔮 **More Services:** Kafka, Cassandra, InfluxDB, and more
+- 🔮 **More Services:** Kafka, InfluxDB, and more
 - 📚 **Better Docs:** More examples, tutorials, and use cases
 - 🎨 **UI Dashboard:** A web interface to manage services (maybe?)
 - 🤖 **Auto-Discovery:** Automatically detect what services your project needs
@@ -550,6 +605,11 @@ SERVICES="postgres redis mongodb" make up-parallel
 
 # Start monitoring stack (Prometheus + Grafana)
 make grafana-up
+
+# Start vector database for AI/ML
+make qdrant-up
+# or
+make milvus-up
 
 # Check status
 make ps

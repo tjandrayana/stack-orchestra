@@ -15,4 +15,8 @@ volumes:
   prometheus-data:
   grafana-data:
   scylla-data:
+  qdrant-data:
+  milvus-data:
+  etcd-data:
+  minio-data:
 
