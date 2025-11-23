@@ -1,0 +1,57 @@
+# Example Makefile for Project A
+# Place this in your Project A root directory
+
+SHELL := /bin/bash
+STACK_ORCHESTRA_DIR := stack-orchestra
+
+# Project A Configuration
+# These are your project-specific values
+POSTGRES_USER := abcd
+POSTGRES_PASSWORD := abcd
+POSTGRES_DB := lalala
+COMPOSE_PROJECT_NAME := project-a
+
+.PHONY: dev-up dev-down dev-logs dev-ps help
+
+help:
+	@echo "Project A Development Commands"
+	@echo ""
+	@echo "  make dev-up     - Start postgres and redis with Project A config"
+	@echo "  make dev-down   - Stop postgres and redis"
+	@echo "  make dev-logs   - View logs"
+	@echo "  make dev-ps     - Show running containers"
+
+dev-up:
+	@echo "🚀 Starting development environment for Project A..."
+	@echo "   PostgreSQL: user=$(POSTGRES_USER), db=$(POSTGRES_DB)"
+	@cd $(STACK_ORCHESTRA_DIR) && \
+		POSTGRES_USER=$(POSTGRES_USER) \
+		POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
+		POSTGRES_DB=$(POSTGRES_DB) \
+		COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME) \
+		make postgres-up redis-up
+
+dev-down:
+	@echo "🛑 Stopping development environment..."
+	@cd $(STACK_ORCHESTRA_DIR) && make postgres-down redis-down
+
+dev-logs:
+	@cd $(STACK_ORCHESTRA_DIR) && SERVICES="postgres redis" make logs
+
+dev-ps:
+	@cd $(STACK_ORCHESTRA_DIR) && make ps
+
+# Individual service commands
+postgres-up:
+	@cd $(STACK_ORCHESTRA_DIR) && \
+		POSTGRES_USER=$(POSTGRES_USER) \
+		POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
+		POSTGRES_DB=$(POSTGRES_DB) \
+		COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME) \
+		make postgres-up
+
+redis-up:
+	@cd $(STACK_ORCHESTRA_DIR) && \
+		COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME) \
+		make redis-up
+
