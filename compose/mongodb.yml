@@ -1,21 +1,21 @@
 services:
   mongodb:
-    image: mongo:7.0
-    container_name: stack-orchestra-mongodb
+    image: ${MONGODB_IMAGE:-mongo:7.0}
+    container_name: ${CONTAINER_PREFIX:-stack-orchestra}-mongodb
     command: ["--wiredTigerCacheSizeGB", "1"]
     environment:
-      MONGO_INITDB_ROOT_USERNAME: orchestra
-      MONGO_INITDB_ROOT_PASSWORD: orchestra
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-orchestra}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-orchestra}
     volumes:
       - mongodb-data:/data/db
     ports:
-      - "27017:27017"
+      - "${MONGODB_PORT:-27017}:27017"
     healthcheck:
       test:
         [
           "CMD",
           "mongosh",
-          "mongodb://orchestra:orchestra@localhost:27017/admin",
+          "mongodb://${MONGODB_ROOT_USERNAME:-orchestra}:${MONGODB_ROOT_PASSWORD:-orchestra}@localhost:27017/admin",
           "--eval",
           "db.runCommand({ ping: 1 })",
         ]
@@ -23,5 +23,5 @@ services:
       timeout: 10s
       retries: 5
     networks:
-      - stack-orchestra
+      - ${NETWORK_NAME:-stack-orchestra}
 

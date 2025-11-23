@@ -309,6 +309,62 @@ curl http://localhost:9091/healthz
 
 ## 🔧 Configuration
 
+### Environment Variables
+
+All configuration values can be customized using environment variables. The repository includes default values that work out of the box, but you can override them by creating a `.env` file.
+
+#### Quick Start with Custom Configuration
+
+1. **Copy the example environment file**:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env`** with your custom values:
+   ```bash
+   # Example: Change PostgreSQL password
+   POSTGRES_PASSWORD=my_secure_password
+   
+   # Example: Change port mappings
+   POSTGRES_PORT=5433
+   REDIS_PORT=6380
+   ```
+
+3. **Use as normal** - Docker Compose automatically loads `.env`:
+   ```bash
+   make postgres-up
+   ```
+
+#### Available Configuration Variables
+
+All services support customization through environment variables. See `.env.example` for the complete list of available variables, including:
+
+- **Project Settings**: `COMPOSE_PROJECT_NAME`, `CONTAINER_PREFIX`
+- **Database Credentials**: `POSTGRES_USER`, `POSTGRES_PASSWORD`, `MYSQL_PASSWORD`, etc.
+- **Port Mappings**: `POSTGRES_PORT`, `REDIS_PORT`, `MONGODB_PORT`, etc.
+- **Image Versions**: `POSTGRES_IMAGE`, `REDIS_IMAGE`, `MONGODB_IMAGE`, etc.
+- **Service-Specific Settings**: Elasticsearch Java options, Grafana admin credentials, etc.
+
+**Note**: The network name (`stack-orchestra`) is defined in `docker-compose.yml` and cannot be changed via environment variables due to Docker Compose limitations. If you need a custom network name, edit `docker-compose.yml` directly.
+
+#### Using Environment Variables Directly
+
+You can also set environment variables directly without a `.env` file:
+
+```bash
+# Override specific values
+POSTGRES_PASSWORD=my_password make postgres-up
+
+# Or export them
+export POSTGRES_PASSWORD=my_password
+export POSTGRES_PORT=5433
+make postgres-up
+```
+
+#### Default Behavior
+
+If no `.env` file exists and no environment variables are set, the system uses the default values (same as the original hardcoded configuration). This ensures **100% backward compatibility** - existing setups continue to work without any changes.
+
 ### Default Service List
 
 By default, all services are included. You can override this:

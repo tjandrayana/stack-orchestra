@@ -1,4 +1,4 @@
-name: stack-orchestra
+name: ${COMPOSE_PROJECT_NAME:-stack-orchestra}
 
 networks:
   stack-orchestra:

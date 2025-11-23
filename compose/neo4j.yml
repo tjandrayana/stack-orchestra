@@ -1,9 +1,9 @@
 services:
   neo4j:
-    image: neo4j:5.23
-    container_name: stack-orchestra-neo4j
+    image: ${NEO4J_IMAGE:-neo4j:5.23}
+    container_name: ${CONTAINER_PREFIX:-stack-orchestra}-neo4j
     environment:
-      - NEO4J_AUTH=neo4j/stackorchestra
+      - NEO4J_AUTH=${NEO4J_AUTH:-neo4j/${NEO4J_PASSWORD:-stackorchestra}}
       - NEO4J_dbms_memory_heap_max__size=1G
       - NEO4J_dbms_default__listen__address=0.0.0.0
       - NEO4J_dbms_default__advertised__address=localhost
@@ -11,8 +11,8 @@ services:
       - neo4j-data:/data
       - neo4j-logs:/logs
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - "${NEO4J_HTTP_PORT:-7474}:7474"
+      - "${NEO4J_BOLT_PORT:-7687}:7687"
     healthcheck:
       test:
         [
@@ -21,12 +21,12 @@ services:
           "-u",
           "neo4j",
           "-p",
-          "stackorchestra",
+          "${NEO4J_PASSWORD:-stackorchestra}",
           "RETURN 1;",
         ]
       interval: 30s
       timeout: 10s
       retries: 5
     networks:
-      - stack-orchestra
+      - ${NETWORK_NAME:-stack-orchestra}
 

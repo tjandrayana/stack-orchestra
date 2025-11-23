@@ -1,7 +1,7 @@
 services:
   scylla:
-    image: scylladb/scylla:latest
-    container_name: stack-orchestra-scylla
+    image: ${SCYLLA_IMAGE:-scylladb/scylla:latest}
+    container_name: ${CONTAINER_PREFIX:-stack-orchestra}-scylla
     command:
       - --smp
       - "1"
@@ -15,10 +15,10 @@ services:
     volumes:
       - scylla-data:/var/lib/scylla
     ports:
-      - "9042:9042"
-      - "10000:10000"
-      - "7000:7000"
-      - "7001:7001"
+      - "${SCYLLA_CQL_PORT:-9042}:9042"
+      - "${SCYLLA_REST_PORT:-10000}:10000"
+      - "${SCYLLA_INTER_NODE_PORT:-7000}:7000"
+      - "${SCYLLA_INTER_NODE_TLS_PORT:-7001}:7001"
     healthcheck:
       test: ["CMD-SHELL", "nodetool status | grep -E '^UN' || exit 1"]
       interval: 30s
@@ -26,5 +26,5 @@ services:
       retries: 10
       start_period: 60s
     networks:
-      - stack-orchestra
+      - ${NETWORK_NAME:-stack-orchestra}
 
