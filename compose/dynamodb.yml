@@ -1,0 +1,18 @@
+services:
+  dynamodb:
+    image: ${DYNAMODB_IMAGE:-amazon/dynamodb-local:latest}
+    container_name: ${CONTAINER_PREFIX:-stack-orchestra}-dynamodb
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-dbPath", "./data"]
+    volumes:
+      - dynamodb-data:/home/dynamodblocal/data
+    working_dir: /home/dynamodblocal
+    ports:
+      - "${DYNAMODB_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ${NETWORK_NAME:-stack-orchestra}
+

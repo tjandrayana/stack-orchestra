@@ -49,7 +49,9 @@ stack-orchestra/
 │   ├── grafana.yml
 │   ├── scylla.yml
 │   ├── qdrant.yml
-│   └── milvus.yml
+│   ├── milvus.yml
+│   ├── dynamodb.yml
+│   └── rabbitmq.yml
 └── ops/                         # Service configurations
     ├── nginx/
     │   └── default.conf
@@ -84,6 +86,8 @@ stack-orchestra/
 | **ScyllaDB** | latest | 9042, 10000 | High-performance NoSQL database (Cassandra-compatible) |
 | **Qdrant** | 1.7.4 | 6333, 6334 | Vector database for similarity search and embeddings |
 | **Milvus** | 2.3.4 | 19530, 9091 | Vector database for AI/ML applications (includes etcd & MinIO) |
+| **DynamoDB Local** | latest | 8000 | Local DynamoDB for development and testing |
+| **RabbitMQ** | 3-management | 5672, 15672 | Message broker with management UI |
 
 ### Service Dependencies
 

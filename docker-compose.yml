@@ -19,4 +19,6 @@ volumes:
   milvus-data:
   etcd-data:
   minio-data:
+  dynamodb-data:
+  rabbitmq-data:
 
