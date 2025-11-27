@@ -1,0 +1,20 @@
+services:
+  consul:
+    image: ${CONSUL_IMAGE:-hashicorp/consul:latest}
+    container_name: ${CONTAINER_PREFIX:-stack-orchestra}-consul
+    command: ["agent", "-dev", "-client", "0.0.0.0"]
+    volumes:
+      - consul-data:/consul/data
+    ports:
+      - "${CONSUL_HTTP_PORT:-8500}:8500"
+      - "${CONSUL_DNS_PORT:-8600}:8600/udp"
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+    healthcheck:
+      test: ["CMD-SHELL", "consul members || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - ${NETWORK_NAME:-stack-orchestra}
+

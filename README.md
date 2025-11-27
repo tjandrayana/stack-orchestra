@@ -51,7 +51,8 @@ stack-orchestra/
 │   ├── qdrant.yml
 │   ├── milvus.yml
 │   ├── dynamodb.yml
-│   └── rabbitmq.yml
+│   ├── rabbitmq.yml
+│   └── consul.yml
 └── ops/                         # Service configurations
     ├── nginx/
     │   └── default.conf
@@ -88,6 +89,7 @@ stack-orchestra/
 | **Milvus** | 2.3.4 | 19530, 9091 | Vector database for AI/ML applications (includes etcd & MinIO) |
 | **DynamoDB Local** | latest | 8000 | Local DynamoDB for development and testing |
 | **RabbitMQ** | 3-management | 5672, 15672 | Message broker with management UI |
+| **Consul** | latest | 8500, 8600 | Service discovery and configuration management |
 
 ### Service Dependencies
 
