@@ -17,6 +17,9 @@ make redis-up
 make openresty-up
 make qdrant-up
 make milvus-up
+make dynamodb-up
+make rabbitmq-up
+make consul-up
 ```
 
 ### Start Multiple Services
@@ -216,6 +219,69 @@ curl http://localhost:9091/healthz
 # Note: Milvus includes etcd (metadata) and MinIO (object storage) as dependencies
 ```
 
+### Example 10: DynamoDB Local
+
+```bash
+# Start DynamoDB Local
+make dynamodb-up
+
+# Access REST API at http://localhost:8000
+
+# Test the API
+curl http://localhost:8000
+
+# Use with AWS CLI
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+# Create a table example
+aws dynamodb create-table \
+  --endpoint-url http://localhost:8000 \
+  --table-name test-table \
+  --attribute-definitions AttributeName=id,AttributeType=S \
+  --key-schema AttributeName=id,KeyType=HASH \
+  --billing-mode PAY_PER_REQUEST
+```
+
+### Example 11: RabbitMQ
+
+```bash
+# Start RabbitMQ
+make rabbitmq-up
+
+# Access Management UI at http://localhost:15672
+# Default credentials: orchestra / orchestra
+
+# AMQP endpoint: amqp://localhost:5672
+# Use with any AMQP client library
+
+# Test with rabbitmqadmin (if installed)
+rabbitmqadmin -H localhost -P 15672 -u orchestra -p orchestra list queues
+
+# Or use with Go client
+# go get github.com/rabbitmq/amqp091-go
+```
+
+### Example 12: Consul
+
+```bash
+# Start Consul
+make consul-up
+
+# Access HTTP API at http://localhost:8500
+# Access Web UI at http://localhost:8500/ui
+
+# DNS interface at localhost:8600 (UDP)
+
+# Test the API
+curl http://localhost:8500/v1/status/leader
+
+# List services
+curl http://localhost:8500/v1/catalog/services
+
+# Use with Consul Go client
+# go get github.com/hashicorp/consul/api
+```
+
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -331,8 +397,9 @@ Default credentials for services:
 | ArangoDB | `root` | `stackorchestra` | - |
 | MongoDB | `orchestra` | `orchestra` | `admin` |
 | Grafana | `admin` | `admin` | - |
+| RabbitMQ | `orchestra` | `orchestra` | - |
 
-**Note**: These are default development credentials. Change them for production use.
+**Note**: These are default development credentials. Change them for production use. DynamoDB Local and Consul (dev mode) don't require credentials.
 
 ## 🗂️ Data Persistence
 
@@ -351,6 +418,9 @@ All database services use Docker volumes for data persistence:
 - `stack-orchestra_milvus-data`
 - `stack-orchestra_etcd-data`
 - `stack-orchestra_minio-data`
+- `stack-orchestra_dynamodb-data`
+- `stack-orchestra_rabbitmq-data`
+- `stack-orchestra_consul-data`
 
 Data persists across container restarts. To remove all data:
 
