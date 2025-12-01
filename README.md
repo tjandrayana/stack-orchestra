@@ -108,6 +108,12 @@ The usage guide includes:
 - Troubleshooting
 - Advanced usage and adding new services
 
+### 📖 Blog Post
+
+Read the story behind Stack Orchestra: [A beginner's journey from setup hell to building a Docker Compose orchestration tool](https://dev.to/tj1609/a-beginners-journey-from-setup-hell-to-building-a-docker-compose-orchestration-tool-that-runs-any-4fd6)
+
+Learn about the motivation, challenges, and journey of building this tool from scratch.
+
 ## 📝 Notes
 
 - Services are configured for **development use** with relaxed security settings
